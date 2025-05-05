@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DetailEkskulRaportController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\JenisKasusController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\MasterEkskulController;
 use App\Http\Controllers\MasterMapelController;
 use App\Http\Controllers\OrangTuaController;
 use App\Http\Controllers\OrtuSantriController;
+use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\RaportController;
 use App\Http\Controllers\SantriController;
 use Illuminate\Http\Request;
@@ -33,3 +35,8 @@ Route::get('/user', function (Request $request) {
 // Route::apiResource('master_ekskul', MasterEkskulController::class);
 // Route::apiResource('detail_ekskul_raport', DetailEkskulRaportController::class);
 // Route::apiResource('raport', RaportController::class);
+
+Route::post('login', [AuthController::class, 'login']);
+Route::get('profile',[AuthController::class,'profile'])->middleware('auth:sanctum');
+Route::get('pengumuman',[PengumumanController::class,'get_pengumuman_data'])->middleware('auth:sanctum');
+Route::get('santri',[SantriController::class,'get_all_santri'])->middleware('auth:sanctum');

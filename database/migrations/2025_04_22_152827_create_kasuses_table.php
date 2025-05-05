@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('id_jenis_kasus');
             $table->string('id_santri');
             $table->string('jenis_pelanggaran');
-            $table->date('tgl_kejadian');
+            $table->string('tgl_kejadian');
             $table->string('ket_pelanggaran');
             $table->string('desc_penyelesaian');
             $table->unsignedBigInteger('created_by');

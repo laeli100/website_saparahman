@@ -48,7 +48,11 @@
 
         <div class="mb-3">
             <label for="nilai" class="form-label">Nilai</label>
-            <input type="text" class="form-control" name="nilai" value="{{ $hafalanSurah->nilai }}">
+            <select name="nilai" class="form-control" required>
+                @foreach($nilaiOptions as $nilai)
+                    <option value="{{ $nilai }}" {{ $hafalanSurah->nilai == $nilai ? 'selected' : '' }}>{{ $nilai }}</option>
+                @endforeach
+            </select>
         </div>
 
         <button type="submit" class="btn btn-primary">Update</button>

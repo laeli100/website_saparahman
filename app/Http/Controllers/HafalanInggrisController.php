@@ -40,7 +40,8 @@ class HafalanInggrisController extends Controller
     {
         $santriList = Santri::all();
         $inggrisList = Inggris::all();
-        return view('hafalan_inggris.create', compact('santriList', 'inggrisList'));
+        $nilaiOptions = ['A', 'B', 'C', 'D'];
+        return view('hafalan_inggris.create', compact('santriList', 'inggrisList', 'nilaiOptions'));
     }
 
     public function store(Request $request)
@@ -49,7 +50,7 @@ class HafalanInggrisController extends Controller
             'id_santri' => 'required',
             'id_inggris' => 'required',
             'tgl_setoran' => 'required|date',
-            'nilai' => 'required|string|max:10',
+            'nilai' => 'required|in:A,B,C,D',
         ]);
 
         $validated['created_by'] = 1;
@@ -64,7 +65,8 @@ class HafalanInggrisController extends Controller
         $hafalanInggris = HafalanInggris::findOrFail($id);
         $santriList = Santri::all();
         $inggrisList = Inggris::all();
-        return view('hafalan_inggris.edit', compact('hafalanInggris', 'santriList', 'inggrisList'));
+        $nilaiOptions = ['A', 'B', 'C', 'D'];
+        return view('hafalan_inggris.edit', compact('hafalanInggris', 'santriList', 'inggrisList', 'nilaiOptions'));
     }
 
     public function update(Request $request, $id)
@@ -73,7 +75,7 @@ class HafalanInggrisController extends Controller
             'id_santri' => 'required',
             'id_inggris' => 'required',
             'tgl_setoran' => 'required|date',
-            'nilai' => 'required|string|max:10',
+            'nilai' => 'required|in:A,B,C,D',
         ]);
 
         $validated['updated_by'] = 1;

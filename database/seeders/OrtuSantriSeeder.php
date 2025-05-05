@@ -16,7 +16,9 @@ class OrtuSantriSeeder extends Seeder
         for ($i=0; $i < 15; $i++) { 
             ortu_santri::create([
                 'id_ortu'  => "1",
-                'id_santri' => "1223"
+                'id_santri' => "1223",
+                'created_by' => "1",
+                'updated_by' => "1"
             ]);
         }
     }

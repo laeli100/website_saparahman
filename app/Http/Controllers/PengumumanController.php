@@ -117,4 +117,21 @@ class PengumumanController extends Controller
 
         return back()->with('success', 'Pengumuman berhasil dihapus.');
     }
+
+    public function get_pengumuman_data(){
+        try {
+            $data = Pengumuman::all();
+            return response()->json([
+                'success'=> true,
+                'message'=> "pengumuman get success",
+                'data' => $data
+            ],200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'data' => null
+            ],200);
+        }
+    }
 }

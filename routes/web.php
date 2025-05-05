@@ -1,10 +1,14 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ArabController;
 use App\Http\Controllers\DetailEkskulRaportController;
 use App\Http\Controllers\DetailNilaiRaportController;
 use App\Http\Controllers\DetailRaportP5Controller;
+use App\Http\Controllers\FiqihController;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\HafalanArabController;
+use App\Http\Controllers\HafalanFiqihController;
 use App\Http\Controllers\HafalanInggrisController;
 use App\Http\Controllers\HafalanSurahController;
 use App\Http\Controllers\InggrisController;
@@ -58,3 +62,7 @@ Route::resource('surah', SurahController::class);
 Route::resource('hafalan-surah', HafalanSurahController::class);
 Route::resource('inggris', InggrisController::class);
 Route::resource('hafalan-inggris', HafalanInggrisController::class);
+Route::resource('arab', ArabController::class);
+Route::resource('hafalan-arab', HafalanArabController::class);
+Route::resource('fiqih', FiqihController::class);
+Route::resource('hafalan-fiqih', HafalanFiqihController::class);

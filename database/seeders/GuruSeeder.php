@@ -17,8 +17,8 @@ class GuruSeeder extends Seeder
             Guru::create([
                 'nama_guru'  => 'guru' . $i,
                 'username' => "laelidewi",
-                'emmail' => "laelidewi100@gmail.com",
-                'password' => "Lzbbxncy180603*",
+                'email' => "laelidewi100@gmail.com",
+                // 'password' => "Lzbbxncy180603*",
                 'id_kelas' => "1",
                 'created_by' => "1"
             ]);

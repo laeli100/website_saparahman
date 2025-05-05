@@ -90,6 +90,6 @@ class SurahController extends Controller
         $surah->update(['deleted_by' => 1]);
         $surah->delete();
 
-        return back()->with('success', 'Surah berhasil dihapus.');
+        return redirect()->route('surah.index')->with('success', 'Surah berhasil dihapus.');
     }
 }

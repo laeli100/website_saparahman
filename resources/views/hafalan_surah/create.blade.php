@@ -49,7 +49,12 @@
 
         <div class="mb-3">
             <label for="nilai" class="form-label">Nilai</label>
-            <input type="text" class="form-control" name="nilai" value="{{ old('nilai') }}">
+            <select name="nilai" class="form-control" required>
+                <option value="">-- Pilih Nilai --</option>
+                @foreach($nilaiOptions as $nilai)
+                    <option value="{{ $nilai }}">{{ $nilai }}</option>
+                @endforeach
+            </select>
         </div>
 
         <button type="submit" class="btn btn-primary">Simpan</button>

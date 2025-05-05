@@ -106,6 +106,23 @@ class SantriController extends Controller
         return redirect()->route('santri.index')->with('success', 'Santri berhasil diupdate.');
     }
 
+    public function get_all_santri(){
+        try {
+            $santri = Santri::all();
+            return response()->json([
+                'success' => true,
+                'message' => "get santri success",
+                'data' => $santri
+            ],200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'data' => null
+            ],200);
+        }
+    }
+
     public function destroy(Santri $santri)
     {
         $santri->update([

@@ -84,6 +84,6 @@ class InggrisController extends Controller
         $inggris->update(['deleted_by' => 1]);
         $inggris->delete();
 
-        return back()->with('success', 'Data berhasil dihapus.');
+        return redirect()->route('inggris.index')->with('success', 'Data berhasil dihapus.');
     }
 }

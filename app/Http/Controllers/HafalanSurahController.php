@@ -39,7 +39,8 @@ class HafalanSurahController extends Controller
     {
         $santriList = Santri::all();
         $surahList = Surah::all();
-        return view('hafalan_surah.create', compact('santriList', 'surahList'));
+        $nilaiOptions = ['A', 'B', 'C', 'D'];
+        return view('hafalan_surah.create', compact('santriList', 'surahList', 'nilaiOptions'));
     }
 
     public function store(Request $request)
@@ -48,7 +49,7 @@ class HafalanSurahController extends Controller
             'id_santri' => 'required',
             'id_surah' => 'required',
             'tgl_setoran' => 'required|date',
-            'nilai' => 'required|string|max:10',
+            'nilai' => 'required||in:A,B,C,D',
         ]);
 
         $validated['created_by'] = 1;
@@ -62,7 +63,8 @@ class HafalanSurahController extends Controller
     {
         $santriList = Santri::all();
         $surahList = Surah::all();
-        return view('hafalan_surah.edit', compact('hafalanSurah', 'santriList', 'surahList'));
+        $nilaiOptions = ['A', 'B', 'C', 'D'];
+        return view('hafalan_surah.edit', compact('hafalanSurah', 'santriList', 'surahList', 'nilaiOptions'));
     }
 
     public function update(Request $request, HafalanSurah $hafalanSurah)
@@ -71,7 +73,7 @@ class HafalanSurahController extends Controller
             'id_santri' => 'required',
             'id_surah' => 'required|exists:surah,id',
             'tgl_setoran' => 'required|date',
-            'nilai' => 'required|string|max:10',
+            'nilai' => 'required|in:A,B,C,D',
         ]);
 
         $validated['updated_by'] = 1;
@@ -88,6 +90,6 @@ class HafalanSurahController extends Controller
         $data->save();
         $data->delete();
 
-        return response()->json(['success' => 'Data berhasil dihapus']);
+        return redirect()->route('hafalan-surah.index')->with('success', 'Data berhasil diperbarui');
     }
 }

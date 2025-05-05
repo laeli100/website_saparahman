@@ -15,7 +15,8 @@
 
         <div class="mb-3">
             <label for="id_santri" class="form-label">Santri</label>
-            <select name="id_santri" class="form-control">
+            <select name="id_santri" class="form-control" required>
+                <option value="">-- Pilih Santri --</option>
                 @foreach($santriList as $santri)
                     <option value="{{ $santri->id }}">{{ $santri->nama_santri }}</option>
                 @endforeach
@@ -23,8 +24,9 @@
         </div>
 
         <div class="mb-3">
-            <label for="id_inggris" class="form-label">Subjek</label>
-            <select name="id_inggris" class="form-control">
+            <label for="id_inggris" class="form-label">Subjek Inggris</label>
+            <select name="id_inggris" class="form-control" required>
+                <option value="">-- Pilih Subjek --</option>
                 @foreach($inggrisList as $inggris)
                     <option value="{{ $inggris->id }}">{{ $inggris->subjek }}</option>
                 @endforeach
@@ -38,7 +40,12 @@
 
         <div class="mb-3">
             <label for="nilai" class="form-label">Nilai</label>
-            <input type="text" class="form-control" name="nilai" value="{{ old('nilai') }}">
+            <select name="nilai" class="form-control" required>
+                <option value="">-- Pilih Nilai --</option>
+                @foreach($nilaiOptions as $nilai)
+                    <option value="{{ $nilai }}">{{ $nilai }}</option>
+                @endforeach
+            </select>
         </div>
 
         <button type="submit" class="btn btn-primary">Simpan</button>
