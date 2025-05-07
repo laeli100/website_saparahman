@@ -29,7 +29,7 @@ $(document).ready(function() {
         serverSide: true,
         ajax: '{{ route('kelas.index') }}',
         columns: [
-            { data: 'id', name: 'id' },
+            { data: 'id', name: 'id', orderable: false, searchable: false },
             { data: 'tingkatan', name: 'tingkatan' },
             { data: 'nama_kelas', name: 'nama_kelas' },
             { data: 'tingkat_kelas', name: 'tingkat_kelas' },

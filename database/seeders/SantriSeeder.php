@@ -21,6 +21,7 @@ class SantriSeeder extends Seeder
                 'nsm' => "4567",
                 'npsm' => "5783",
                 'id_kelas' => "1",
+                'gender' => 'santriwan',
                 'created_by' => "1",
                 'updated_by' => "1",
                 'deleted_by' => "1"

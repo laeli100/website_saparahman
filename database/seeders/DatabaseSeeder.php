@@ -14,55 +14,20 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            SantriSeeder::class
-        ]);
-
-        $this->call([
-            OrangTuaSeeder::class
-        ]);
-
-        $this->call([
-            OrtuSantriSeeder::class
-        ]);
-
-        $this->call([
-            GuruSeeder::class
-        ]);
-
-        $this->call([
-            AdminSeeder::class
-        ]);
-
-        $this->call([
-            KasusSeeder::class
-        ]);
-
-        $this->call([
-            JenisKasusSeeder::class
-        ]);
-
-        $this->call([
-            KelasSeeder::class
-        ]);
-
-        $this->call([
-            MasterMapelSeeder::class
-        ]);
-
-        $this->call([
-            MapelKelasSeeder::class
-        ]);
-
-        $this->call([
-            MasterEkskulSeeder::class
-        ]);
-
-        $this->call([
-            DetailEkskulRaportSeeder::class
-        ]);
-
-        $this->call([
-            RaportSeeder::class
+            SantriSeeder::class,
+            OrangTuaSeeder::class,
+            OrtuSantriSeeder::class,
+            GuruSeeder::class,
+            AdminSeeder::class,
+            KasusSeeder::class,
+            JenisKasusSeeder::class,
+            KelasSeeder::class,
+            MasterMapelSeeder::class,
+            MapelKelasSeeder::class,
+            MasterEkskulSeeder::class,
+            DetailEkskulRaportSeeder::class,
+            RaportSeeder::class,
+            AccountSeeder::class
         ]);
     }
 }

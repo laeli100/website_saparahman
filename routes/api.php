@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DetailEkskulRaportController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\JenisKasusController;
+use App\Http\Controllers\KandunganMadingController;
 use App\Http\Controllers\KasusController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MapelKelasController;
@@ -39,4 +40,5 @@ Route::get('/user', function (Request $request) {
 Route::post('login', [AuthController::class, 'login']);
 Route::get('profile',[AuthController::class,'profile'])->middleware('auth:sanctum');
 Route::get('pengumuman',[PengumumanController::class,'get_pengumuman_data'])->middleware('auth:sanctum');
-Route::get('santri',[SantriController::class,'get_all_santri'])->middleware('auth:sanctum');
+Route::get('santri-by-ortu',[SantriController::class,'get_all_santri_by_ortu'])->middleware('auth:sanctum');
+Route::get('kandungan_mading',[KandunganMadingController::class,'kandungan_mading']);

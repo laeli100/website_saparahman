@@ -17,7 +17,13 @@
                 <tr>
                     <th>No</th>
                     <th>Nama Santri</th>
+                    <th>NIS</th>
                     <th>NISN</th>
+                    <th>NSM</th>
+                    <th>NPSM</th>
+                    <th>Tingkatan</th>
+                    <th>Nama Kelas</th>
+                    <th>Gender</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -31,31 +37,54 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            // Initialize the DataTable
             $('#santri-table').DataTable({
-                processing: true, // Show loading indicator
-                serverSide: true, // Enable server-side processing
-                ajax: '{{ route('santri.index') }}', // Fetch data from the server
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route('santri.index') }}',
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
                         orderable: false,
                         searchable: false
-                    }, // Row index for numbering
+                    },
                     {
                         data: 'nama_santri',
                         name: 'nama_santri'
+                    },
+                    {
+                        data: 'nis',
+                        name: 'nis'
                     },
                     {
                         data: 'nisn',
                         name: 'nisn'
                     },
                     {
+                        data: 'nsm',
+                        name: 'nsm'
+                    },
+                    {
+                        data: 'npsm',
+                        name: 'npsm'
+                    },
+                    {
+                        data: 'tingkatan',
+                        name: 'tingkatan'
+                    },
+                    {
+                        data: 'nama_kelas',
+                        name: 'nama_kelas'
+                    },
+                    {
+                        data: 'gender',
+                        name: 'gender'
+                    },
+                    {
                         data: 'action',
                         name: 'action',
                         orderable: false,
                         searchable: false
-                    }, // Action buttons (view, edit, delete)
+                    }
                 ]
             });
         });

@@ -49,8 +49,19 @@
             <select class="form-control" name="id_kelas">
                 <option value="">-- Pilih Kelas --</option>
                 @foreach($kelas as $k)
-                    <option value="{{ $k->id }}" {{ old('id_kelas') == $k->id ? 'selected' : '' }}>{{ $k->nama_kelas }}</option>
+                    <option value="{{ $k->id }}" {{ old('id_kelas') == $k->id ? 'selected' : '' }}>
+                        {{ $k->nama_kelas }} - {{ $k->tingkatan }}
+                    </option>
                 @endforeach
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="gender" class="form-label">Gender</label>
+            <select class="form-control" name="gender">
+                <option value="">-- Pilih Gender --</option>
+                <option value="santriwan" {{ old('gender') == 'santriwan' ? 'selected' : '' }}>Santriwan</option>
+                <option value="santriwati" {{ old('gender') == 'santriwati' ? 'selected' : '' }}>Santriwati</option>
             </select>
         </div>
 

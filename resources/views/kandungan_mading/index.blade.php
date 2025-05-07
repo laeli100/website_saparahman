@@ -4,7 +4,7 @@
     <div class="container">
         <h2>Data Kandungan Mading</h2>
         <a href="{{ route('kandungan-mading.create') }}" class="btn btn-success mb-3">Tambah Kandungan Mading</a>
-    <table class="table table-bordered" id="kandungan-mading-table">
+        <table class="table table-bordered" id="kandungan-mading-table">
             <thead>
                 <tr>
                     <th>No</th>
@@ -48,9 +48,8 @@
                     {
                         data: 'file',
                         name: 'file',
-                        render: function(data, type, row) {
-                            return data ? `<a href="{{ asset('storage') }}/${data}" target="_blank">Lihat File</a>` : '-';
-                        }
+                       
+
                     },
                     {
                         data: 'desk',

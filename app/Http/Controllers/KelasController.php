@@ -60,7 +60,7 @@ class KelasController extends Controller
         }
 
         $input = $request->only('tingkatan', 'tingkat_kelas', 'nama_kelas');
-        $input['created_by'] = Auth::id() ?? 1; // fallback ke 1 kalau belum login
+        $input['created_by'] =  1; // fallback ke 1 kalau belum login
 
         Kelas::create($input);
 
@@ -104,7 +104,7 @@ class KelasController extends Controller
 
         $kelas = Kelas::findOrFail($id); // <-- ini diperbaiki
         $input = $request->only('tingkatan', 'tingkat_kelas', 'nama_kelas');
-        $input['updated_by'] = Auth::id() ?? 1;
+        $input['updated_by'] = 1;
 
         $kelas->update($input);
 
@@ -117,7 +117,7 @@ class KelasController extends Controller
     public function destroy($id)
     {
         $kelas = Kelas::findOrFail($id); // <-- ini diperbaiki
-        $kelas->update(['deleted_by' => Auth::id() ?? 1]);
+        $kelas->update(['deleted_by' => 1]);
         $kelas->delete();
 
         return redirect()->route('kelas.index')->with('success', 'Kelas berhasil dihapus');

@@ -11,22 +11,22 @@ use Yajra\DataTables\Facades\DataTables;
 class KandunganMadingController extends Controller
 {
     public function index(Request $request)
-{
-    if ($request->ajax()) {
-        $data = KandunganMading::with('asas')->select('*');
-        return DataTables::of($data)
-            ->addIndexColumn()
-            ->addColumn('id_asas', function ($row) {
-                return $row->asas ? $row->asas->nama_asas : '-';
-            })
-            ->addColumn('file', function ($row) {
-                return $row->file ? '<a href="' . asset("storage/{$row->file}") . '" target="_blank">Lihat File</a>' : '-';
-            })
-            ->addColumn('action', function ($row) {
-                $edit = route('kandungan-mading.edit', $row->id);
-                $show = route('kandungan-mading.show', $row->id);
-                $delete = route('kandungan-mading.destroy', $row->id);
-                return "
+    {
+        if ($request->ajax()) {
+            $data = KandunganMading::with('asas')->select('*');
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('id_asas', function ($row) {
+                    return $row->asas ? $row->asas->nama_asas : '-';
+                })
+                ->addColumn('file', function ($row) {
+                    return $row->file ? '<a href="' . asset("storage/{$row->file}") . '" target="_blank">Lihat File</a>' : '-';
+                })
+                ->addColumn('action', function ($row) {
+                    $edit = route('kandungan-mading.edit', $row->id);
+                    $show = route('kandungan-mading.show', $row->id);
+                    $delete = route('kandungan-mading.destroy', $row->id);
+                    return "
                     <a href='$show' class='btn btn-info btn-sm'>Lihat</a>
                     <a href='$edit' class='btn btn-warning btn-sm'>Edit</a>
                     <form action='$delete' method='POST' style='display:inline-block' class='delete-form'>
@@ -34,13 +34,19 @@ class KandunganMadingController extends Controller
                         <button type='submit' onclick='return confirm(\"Yakin hapus?\")' class='btn btn-danger btn-sm'>Hapus</button>
                     </form>
                 ";
-            })
-            ->rawColumns(['file', 'action'])
-            ->make(true);
-    }
+                })->addColumn('file', function($row) {
+                    if ($row->file) {
+                        $url = asset('storage/' . $row->file);
+                        return '<a href="' . $url . '" target="_blank">Lihat File</a>';
+                    }
+                    return '-';
+                })
+                ->rawColumns(['file', 'action'])
+                ->make(true);
+        }
 
-    return view('kandungan_mading.index');
-}
+        return view('kandungan_mading.index');
+    }
 
 
     public function create()
@@ -124,5 +130,36 @@ class KandunganMadingController extends Controller
         $kandunganMading->delete();
 
         return redirect()->route('kandungan-mading.index')->with('success', 'Kandungan Mading berhasil dihapus.');
+    }
+
+    public function kandungan_mading()
+    {
+        try {
+            $kandunganMading = KandunganMading::with('asas')->get();
+            $data = $kandunganMading->filter()->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'judul' => $item->judul,
+                    'file' => $item->file,
+                    'gambar' => $item->nama_pengampu,
+                    'asas' => $item->asas->nama_asas ?? null, // ambil nama_asas dari relasi asas
+                    'createdBy' => $item->created_by,
+                    'updatedBy' => $item->updated_by,
+                    'deletedBy' => $item->deleted_by,
+                ];
+            });
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Get kandungan mading success',
+                'data' => $data->values()
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'data' => null
+            ], 500);
+        }
     }
 }

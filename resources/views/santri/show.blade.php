@@ -26,8 +26,18 @@
             <td>{{ $santri->npsm }}</td>
         </tr>
         <tr>
+            <th>Jenis Kelamin</th>
+            <td>{{ ucfirst($santri->gender) }}</td>
+        </tr>
+        <tr>
             <th>Kelas</th>
-            <td>{{ $santri->kelas->nama_kelas ?? 'Belum Ada' }}</td>
+            <td>
+                @if($santri->kelas)
+                    {{ $santri->kelas->nama_kelas }} - {{ $santri->kelas->tingkatan }}
+                @else
+                    Belum Ada
+                @endif
+            </td>
         </tr>
     </table>
 
