@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('mading', function (Blueprint $table) {
             $table->id();
             $table->string('id_kategori_mading');
+            $table->string('id_asas');
             $table->string('judul');
             $table->string('gambar');
-            $table->string('gambaran_deskripsi');
+            $table->text('gambaran_deskripsi');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();

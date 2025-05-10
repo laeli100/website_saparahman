@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nama_pengampu');
             $table->string('judul');
             $table->string('file');
-            $table->string('desk');
+            $table->text('desk');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();

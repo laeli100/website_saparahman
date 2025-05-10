@@ -10,6 +10,7 @@
                     <th>No</th>
                     <th>Judul</th>
                     <th>ID Kategori</th>
+                    <th>ID Asas</th>
                     <th>Gambar</th> 
                     <th>Gambaran</th> 
                     <th>Aksi</th>
@@ -35,6 +36,10 @@
                     {
                         data: 'judul',
                         name: 'judul'
+                    },
+                    {
+                        data: 'id_asas',
+                        name: 'id_asas'
                     },
                     {
                         data: 'id_kategori_mading',

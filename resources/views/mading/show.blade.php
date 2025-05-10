@@ -10,6 +10,11 @@
     </div>
 
     <div class="mb-3">
+        <strong>ID Asas:</strong>
+        <p>{{ $mading->id_asas }}</p>
+    </div>
+
+    <div class="mb-3">
         <strong>Judul:</strong>
         <p>{{ $mading->judul }}</p>
     </div>

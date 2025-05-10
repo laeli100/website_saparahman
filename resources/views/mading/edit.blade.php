@@ -25,6 +25,21 @@
             </div>            
 
             <div class="mb-3">
+                <label for="id_asas" class="form-label">Asas</label>
+                <select class="form-control @error('id_asas') is-invalid @enderror" id="id_asas" name="id_asas" required>
+                    <option value="">Pilih Asas</option>
+                    @foreach ($asass as $asas)
+                        <option value="{{ $asas->id }}" {{ old('id_asas', $mading->id_asas) == $asas->id ? 'selected' : '' }}>
+                            {{ $asas->nama_asas }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('id_asas')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
                 <label for="judul" class="form-label">Judul</label>
                 <input type="text" class="form-control @error('judul') is-invalid @enderror" id="judul"
                     name="judul" value="{{ old('judul', $mading->judul) }}" required>

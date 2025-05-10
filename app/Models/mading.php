@@ -14,7 +14,11 @@ class mading extends Model
     protected $guarded = ['id'];
 
     public function kategori()
-{
-    return $this->belongsTo(KategoriMading::class, 'id_kategori_mading');
-}
+    {
+        return $this->belongsTo(KategoriMading::class, 'id_kategori_mading');
+    }
+    public function asas()
+    {
+        return $this->belongsTo(MasterAsas::class, 'id_asas');
+    }
 }

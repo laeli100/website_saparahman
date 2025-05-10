@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\KategoriMading;
 use App\Models\Mading;
+use App\Models\mading as ModelsMading;
+use App\Models\MasterAsas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -21,6 +23,9 @@ class MadingController extends Controller
                     $url = asset('storage/' . $row->gambar);
                     return '<img src="' . $url . '" width="80" height="60" style="object-fit:cover;" />';
                 })
+                ->addColumn('id_asas', function ($row) {
+                    return $row->asas ? $row->asas->nama_asas : '-';
+                })
                 ->addColumn('id_kategori_mading', function ($row) {
                     return $row->kategori ? $row->kategori->kategori : '-';
                 })
@@ -37,16 +42,58 @@ class MadingController extends Controller
         return view('mading.index'); // Halaman Blade dengan DataTable
     }
 
+    public function get_all_mading(Request $request)
+    {
+        try {
+            $madings = Mading::with('kategori')->get();
+
+            // Kelompokkan berdasarkan nama kategori
+            $grouped = $madings->groupBy(function ($item) {
+                return $item->kategori->kategori ?? 'Tanpa Kategori';
+            });
+
+            // Format ulang hasil agar sesuai struktur JSON yang kamu mau
+            $result = [];
+            foreach ($grouped as $kategori => $items) {
+                $result[$kategori] = $items->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'judul' => $item->judul,
+                        'gambar' => $item->gambar,
+                        'gambaran_deskripsi' => $item->gambaran_deskripsi,
+                        'asas' => $item->asas->nama_asas,
+                        'created_by' => $item->created_by,
+                        'created_at' => $item->created_at,
+                    ];
+                });
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Get grouped mading success',
+                'data' => $result
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'data' => null
+            ], 500);
+        }
+    }
+
     public function create()
     {
         $kategoriMadings = KategoriMading::all();
-        return view('mading.create',compact('kategoriMadings'));
+        $asass = MasterAsas::all();
+        return view('mading.create', compact('kategoriMadings', 'asass'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'id_kategori_mading' => 'required',
+            'id_asas' => 'required|exists:master_asas,id',
             'judul' => 'required',
             'gambar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'gambaran_deskripsi' => 'required|string',
@@ -67,7 +114,8 @@ class MadingController extends Controller
     public function edit(Mading $mading)
     {
         $kategoriList = KategoriMading::all();
-        return view('mading.edit', compact('mading','kategoriList'));
+        $asass = MasterAsas::all();
+        return view('mading.edit', compact('mading', 'kategoriList', 'asass'));
     }
 
     public function update(Request $request, Mading $mading)
@@ -75,6 +123,7 @@ class MadingController extends Controller
         // dd($request->all());
         $validated = $request->validate([
             'id_kategori_mading' => 'required',
+            'id_asas' => 'required|exists:master_asas,id',
             'judul' => 'required',
             'gambaran_deskripsi' => 'required',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',

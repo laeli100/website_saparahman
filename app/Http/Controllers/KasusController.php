@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\jenis_kasus;
 use App\Models\Kasus;
+use App\Models\orang_tua;
+use App\Models\ortu_santri;
 use App\Models\Santri;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -106,5 +109,54 @@ class KasusController extends Controller
         $kasus->delete();
 
         return redirect()->route('kasus.index')->with('success', 'Kasus deleted successfully.');
+    }
+
+    public function getAllKasus(Request $request)
+    {
+        try {
+            $user = $request->user();
+            Log::info($user);
+
+            // Ambil data orang tua berdasarkan no_wa
+            $orangtua = orang_tua::where('no_telepon', $user->no_wa)->first();
+
+            // Cek jika data orang tua ditemukan
+            if (!$orangtua) {
+                return response()->json(['message' => 'Orang tua tidak ditemukan'], 404);
+            }
+
+            // Ambil semua id_santri yang terkait dengan id_ortu
+            $idSantriList = ortu_santri::where('id_ortu', $orangtua->id)->pluck('id_santri');
+
+            // Ambil data kasus yang id_santri-nya ada di daftar idSantriList
+            $kasus = Kasus::with(['jenisKasus', 'santri'])
+                ->whereIn('id_santri', $idSantriList)
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'jenis_pelanggaran' => $item->jenis_pelanggaran,
+                        'keterangan_pelanggaran' => $item->ket_pelanggaran,
+                        'tanggal_kejadian' => $item->tgl_kejadian,
+                        'desc_penyelesaian' => $item->desc_penyelesaian,
+                        'jenis_kasus' => $item->jenisKasus->jenis_kasus,
+                        'santri' => $item->santri->nama_santri ?? null,
+                    ];
+                });
+            Log::info($kasus);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Get data kasus berhasil',
+                'data' => $kasus
+            ], 200);
+        } catch (\Exception $e) {
+            Log::info($e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'data' => null
+            ], 500);
+        }
     }
 }

@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Guru;
 use App\Models\Kelas;
+use App\Models\orang_tua;
+use App\Models\ortu_santri;
 use App\Models\Raport;
 use App\Models\Santri;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
 
 class RaportController extends Controller
@@ -93,7 +96,7 @@ class RaportController extends Controller
     {
         // Menemukan raport berdasarkan ID
         $raport = Raport::with(['santri', 'guru', 'kelas'])->findOrFail($id);
-        
+
         // Mengambil data terkait untuk form dropdown
         $santris = Santri::all();
         $gurus = Guru::all();
@@ -140,12 +143,89 @@ class RaportController extends Controller
         $raport = Raport::findOrFail($id);
 
         // Menandai siapa yang menghapus raport
-        $raport->deleted_by = 1; 
+        $raport->deleted_by = 1;
         $raport->save();
 
         // Menghapus raport
         $raport->delete();
 
         return redirect()->route('raport.index')->with('success', 'Raport deleted successfully');
+    }
+
+    public function eraport(Request $request)
+    {
+        try {
+            $user = $request->user();
+            $orang_tuas = orang_tua::where('no_telepon', '=', $user->wa)->first();
+            $orang_tua_santri = ortu_santri::where('id_ortu', '=', $orang_tuas->id)->get();
+        } catch (\Exception $e) {
+        }
+    }
+
+
+    public function get_kelas()
+    {
+        try {
+            $kelas = Kelas::all();
+            return response()->json([
+                'success' => true,
+                'message' => "success get data",
+                'data' => $kelas
+            ], 200);
+        } catch (\Exception $e) {
+            Log::info($e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'data' => null
+            ], 500);
+        }
+    }
+
+    public function get_all_mapel(Request $request)
+    {
+        try {
+            $user = $request->user();
+
+            // Cari orang tua berdasarkan nomor WhatsApp
+            $orang_tua = orang_tua::where('no_telepon', $user->no_wa)->first();
+
+            if (!$orang_tua) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Orang tua tidak ditemukan',
+                    'data' => null
+                ], 404);
+            }
+
+            // Ambil relasi ortu_santri
+            $ortu_santri = ortu_santri::where('id_orang_tua', $orang_tua->id)->first();
+
+            if (!$ortu_santri) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Santri terkait tidak ditemukan',
+                    'data' => null
+                ], 404);
+            }
+
+            // Ambil raport berdasarkan id_santri
+            $raport = Raport::where('id_santri', $ortu_santri->id_santri)->get();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data raport berhasil diambil',
+                'data' => $raport
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat mengambil data raport',
+                'error' => $e->getMessage(),
+                'data' => null
+            ], 500);
+        }
     }
 }

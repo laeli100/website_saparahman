@@ -63,7 +63,7 @@ class KandunganMadingController extends Controller
             'nama_pengampu' => 'required|string|max:255',
             'judul' => 'required|string|max:255',
             'file' => 'required|file',
-            'desk' => 'required|string|max:255',
+            'desk' => 'required',
         ]);
 
         $filePath = $request->file('file')->store('kandungan_mading_files', 'public');
@@ -101,7 +101,7 @@ class KandunganMadingController extends Controller
             'nama_pengampu' => 'required|string|max:255',
             'judul' => 'required|string|max:255',
             'file' => 'nullable|file',
-            'desk' => 'required|string|max:255',
+            'desk' => 'required',
         ]);
 
         $kandunganMading = KandunganMading::findOrFail($id);
@@ -140,6 +140,7 @@ class KandunganMadingController extends Controller
                 return [
                     'id' => $item->id,
                     'judul' => $item->judul,
+                    'pengampu' => $item->nama_pengampu,
                     'file' => $item->file,
                     'gambar' => $item->nama_pengampu,
                     'asas' => $item->asas->nama_asas ?? null, // ambil nama_asas dari relasi asas
