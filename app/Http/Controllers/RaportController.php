@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetailNilaiRaport;
 use App\Models\Guru;
 use App\Models\Kelas;
+use App\Models\mapel_kelas;
+use App\Models\Master_Mapel;
 use App\Models\orang_tua;
 use App\Models\ortu_santri;
 use App\Models\Raport;
@@ -199,7 +202,8 @@ class RaportController extends Controller
             }
 
             // Ambil relasi ortu_santri
-            $ortu_santri = ortu_santri::where('id_orang_tua', $orang_tua->id)->first();
+            $ortu_santri = ortu_santri::where('id_ortu', $orang_tua->id)->first();
+
 
             if (!$ortu_santri) {
                 return response()->json([
@@ -209,8 +213,36 @@ class RaportController extends Controller
                 ], 404);
             }
 
-            // Ambil raport berdasarkan id_santri
-            $raport = Raport::where('id_santri', $ortu_santri->id_santri)->get();
+            $raport = Raport::with(['santri', 'guru', 'kelas'])
+                ->where('id_santri', $ortu_santri->id_santri)
+                ->get()
+                ->map(function ($item) {
+                    // Ambil semua detail nilai untuk raport ini
+                    $detail_nilai = DetailNilaiRaport::where('id_raport', $item->id)->get();
+                
+                    // Ambil data nama mapel dan nilai
+                    $mapel = $detail_nilai->map(function ($nilai) {
+                        $nama_mapel = Master_Mapel::find($nilai->id_mapel)->nama_mapel ?? null;
+
+                        return [
+                            'nama_mapel' => $nama_mapel,
+                            'nilai' => $nilai->nilai
+                        ];
+                    });
+
+                    return [
+                        'id' => $item->id,
+                        'semester' => $item->semester,
+                        'nama_santri' => $item->santri->nama_santri ?? null,
+                        'nama_guru' => $item->guru->username ?? null,
+                        'kelas' => $item->kelas->tingkat_kelas ?? null,
+                        'mapel' => $mapel
+                    ];
+                });
+
+
+
+
 
             return response()->json([
                 'success' => true,
@@ -222,8 +254,7 @@ class RaportController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan saat mengambil data raport',
-                'error' => $e->getMessage(),
+                'message' => $e->getMessage(),
                 'data' => null
             ], 500);
         }

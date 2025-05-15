@@ -47,4 +47,4 @@ Route::get('kandungan_mading',[KandunganMadingController::class,'kandungan_madin
 Route::get('mading',[MadingController::class,'get_all_mading'])->middleware('auth:sanctum');
 Route::get('getAllKasus',[KasusController::class,'getAllKasus'])->middleware('auth:sanctum');
 Route::get('kelas',[RaportController::class,'get_kelas']);
-Route::get('mapel',[RaportController::class,'get_all_mapel']);
+Route::get('mapel',[RaportController::class,'get_all_mapel'])->middleware('auth:sanctum');

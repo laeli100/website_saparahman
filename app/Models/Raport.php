@@ -20,4 +20,8 @@ class Raport extends Model
         return $this->belongsTo(Kelas::class, 'id_kelas');
     }
 
+    public function mapel_kelas()
+    {
+        return $this->hasMany(mapel_kelas::class, 'tingkatan_kelas', 'tingkat_kelas');
+    }
 }
